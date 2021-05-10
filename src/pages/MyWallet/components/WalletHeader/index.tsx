@@ -30,10 +30,10 @@ const WalletHeader = () => {
 
   return (
     <header className={styles.header} style={{}} >
-       <Link to="/wallet"> 
+       <Link to="/wallet/detail"> 
         <img src={logo} alt="logo" width="10%" className={styles.logo} style={{padding: "10px"}}/>
        </Link> 
-      <Link to ="/wallet" className={styles.wallet}  style={{color: "white"}}>
+      <Link to ="/wallet/detail" className={styles.wallet}  style={{color: "white"}}>
         My Wallet
       </Link>
       <a href="https://rinkeby-browser.zktube.io/" target="_blank" className={styles.wallet} style={{color: "white"}}>

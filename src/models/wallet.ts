@@ -181,6 +181,8 @@ export default {
           syncHTTPProvider: _provider,
         });
         // console.log('state 2', state);
+        // wallet.update({unMetaDialogVisible:false});
+        wallet.update({metaDialogVisible: false});
         history.push('/wallet/detail');
         // try {
         //   await signKey(_wallet);
@@ -352,7 +354,9 @@ export default {
         // }
         return { syncWallet: _wallet, syncHTTPProvider: _provider };
       } else {
-        console.log('error network,', netId);
+        wallet.update({
+          errorNetworkVisible: true,
+        });
         return null;
       }
     },
@@ -464,7 +468,7 @@ export default {
     async history(data, thisModel) {
       let syncWallet = null;
       let syncHTTPProvider = null;
-      if (thisModel && thisModel.wallet && thisModel.wallet.syncWallet) {
+      if (thisModel?.wallet?.syncWallet) {
         syncWallet = thisModel.wallet.syncWallet;
       } else {
         const { syncWallet: _wallet, syncHTTPProvider: _provider } = await this.refreshWallet();
@@ -472,12 +476,15 @@ export default {
         syncHTTPProvider = _provider;
       }
 
-      const account = syncWallet.cachedAddress;
-      const queryUrl = g_restApiUrl + '/account/' + account + '/history/0/25';
+      if (syncWallet) {
+        const account = syncWallet.cachedAddress;
+        const queryUrl = g_restApiUrl + '/account/' + account + '/history/0/25';
 
-      const response = await fetch(queryUrl);
-      const result = await response.json();
-      return result;
+        const response = await fetch(queryUrl);
+        const result = await response.json();
+        return result;
+      }
+      return null;
     },
 
     async setState(payload: IState) {

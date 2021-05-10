@@ -1,16 +1,27 @@
 import React from 'react';
 import { Tab } from '@alifd/next';
-
+import { useMount } from 'ahooks';
+import store from '@/store';
 import WalletHeader from '@/components/WalletHeader';
 
 import Wallet from './components/Wallet';
 import Transactions from './components/Transactions';
 import SelectWalletDialog from '../MyWallet/components/SelectWalletDialog';
+import MetaDialog from '../MyWallet/components/MetaDialog';
+import UnMetaDialog from '../MyWallet/components/UnMetaDialog';
 import ErrorNetworkDialog from '../MyWallet/components/ErrorNetworkDialog';
 
 import styles from './index.module.scss';
 
 const WalletDetail = (props) => {
+  const [, action] = store.useModel('wallet');
+
+  useMount(() => {
+    if (props?.searchParams?.c == 1) {
+      console.log('WalletDetail', props.searchParams.c);
+      action.setState({ selectWalletDialogVisible: true });
+    }
+  });
 
   const transactionPage = props.transaction;
   return (
@@ -36,7 +47,9 @@ const WalletDetail = (props) => {
           <Transactions />
         </Tab.Item>
       </Tab>
-      <SelectWalletDialog />   
+      <SelectWalletDialog />
+      <MetaDialog />
+      <UnMetaDialog />
       <ErrorNetworkDialog />
 
       {/* <WalletFooter/> */}

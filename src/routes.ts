@@ -51,7 +51,8 @@ const routerConfig = [
       },
       {
         path: '/wallet',
-        component: MyWallet,
+        component: WalletDetail,
+        // component: MyWallet,
       },
       {
         path: '/coming-soon',
@@ -59,7 +60,7 @@ const routerConfig = [
       },
       {
         path: '/',
-        redirect: '/wallet',
+        redirect: '/wallet/detail',
       },
      
     ],

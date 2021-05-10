@@ -12,7 +12,7 @@ const ErrorNetworkDialog = () => {
 
   function onClose() {
     action.setState({ errorNetworkVisible: false });
-    history.push('/wallet');
+    history.push('/wallet/detail');
   }
 
   return (

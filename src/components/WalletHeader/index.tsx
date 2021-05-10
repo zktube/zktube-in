@@ -1,5 +1,6 @@
-import React from 'react';
-import { Select, Button , Nav} from '@alifd/next';
+import React, { useCallback } from 'react';
+import { Select, Button , Nav, Message } from '@alifd/next';
+import copy from 'copy-text-to-clipboard';
 import logo from '@/assets/logo.png';
 import styles from './index.module.scss';
 import store from '@/store';
@@ -10,11 +11,9 @@ import Wallet from '../../pages/WalletDetail/components/Wallet';
 
 const { Option } = Select;
 const { Item } = Nav;
-const header = <Link to="/wallet"> 
+const header = <a href="https://zktube.io/" target="_blank"> 
                 <img src={logo} alt="logo" width="10%" height= "20%" className={styles.logo} style={{padding: "0px", height:"34px", marginLeft: "9px"}}/>
-              </Link> 
-
-
+              </a> 
 
 const WalletHeader = () => {
   const [wallet, action] = store.useModel('wallet');
@@ -34,6 +33,13 @@ const WalletHeader = () => {
       return account;
     }
   }
+
+  const onCopy = useCallback(() => {
+    if (wallet?.account) {
+      copy(wallet.account);
+      Message.success('Wallet Address Copied!');
+    }
+  }, [wallet]);
 
   const footer =  
   <div style={{margin: "10px 20px 10px 0px"}}>
@@ -56,7 +62,7 @@ const WalletHeader = () => {
           ) : (
             <div className={styles.account}>
               <span className={styles.ethAssets}>{wallet?.ethL1Balance ? (Number(ethers.utils.formatEther(wallet.ethL1Balance))?.toFixed(2)) : 0}ETH</span>
-              <span className={styles.ethAddress}>{wallet?.account && (compressAccount(wallet.account)) }</span>
+              <span className={styles.ethAddress} onClick={onCopy}>{wallet?.account && (compressAccount(wallet.account)) }</span>
             </div>
           )}
   </div>
