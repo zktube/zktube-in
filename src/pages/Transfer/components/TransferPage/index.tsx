@@ -352,7 +352,7 @@ const TransferPage = () => {
                     <Option value="Ropsten">Ropsten</Option>
                   </Select> */}
                   
-                  <Button type="primary"  style={{padding: "7px", height: "45px", borderRadius: "0px 10px 10px 0px"}} className={styles.buttonSelected1} onClick={handleSelectToken}>
+                  <Button type="primary" style={{height: "45px", borderRadius: "5px 10px 10px 5px"}} className={styles.buttonSelected1} onClick={handleSelectToken}>
                     {selected}
                     <Icon type="icon-select" />
                   </Button>
