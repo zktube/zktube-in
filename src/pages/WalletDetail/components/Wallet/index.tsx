@@ -34,6 +34,7 @@ function Wallet() {
   }, []);
 
   const onTransfer = useCallback(() => {
+    action.setState({ selectWalletDialogVisible: false, metaDialogVisible: false });
     history.push('/wallet/transfer');
     // console.log('transfer');
   }, []);
@@ -57,7 +58,6 @@ function Wallet() {
           return amount * wallet.ethPrice;
         }
       }
-      console.log(wallet.assets);
     }
 
     return 0.00;

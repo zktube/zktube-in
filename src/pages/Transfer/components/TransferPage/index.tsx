@@ -139,7 +139,6 @@ const TransferPage = () => {
       //   exceptionMsg,
       // });
       // // throw(exceptionMsg);
-      console.log("messageerror", e.message);
       if (e.message?.indexOf('User denied message signature.') > 0) {
         setLoading(false);
       }
@@ -222,7 +221,6 @@ const TransferPage = () => {
 
   const checkAddress = useCallback((_address) => {
     setAddress(_address);
-    console.log("add", _address);
     if (!web3.utils.isAddress(_address)){
       setValidAddress(true);
     }
@@ -285,7 +283,6 @@ const TransferPage = () => {
 
   const setAmountByWei = useCallback((eth) => {
     // const _wei = ethers.BigNumber.from(wei);
-    // console.log("_wei", _wei)
 
     // const eth = ethers.utils.formatEther(_wei);
     setAmount(eth);

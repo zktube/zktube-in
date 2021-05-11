@@ -117,7 +117,6 @@ const zkTubeInitialize = async (_web3: any, callback?: (e: CustomError) => void)
   } catch (e) {
     // window.location.reload();
 
-    console.log('No Signature', e);
     callback && callback(e);
     throw Error('please sign');
   }
@@ -167,7 +166,7 @@ export default {
             });
           }
         });
-        // console.log('state 1', state);
+        
         wallet.update({
           // l1TxUrl: g_l1TxUrl,
           // l2BlockUrl: g_l2BlockUrl,
@@ -176,7 +175,6 @@ export default {
           account: _account,
           syncHTTPProvider: _provider,
         });
-        // console.log('state 2', state);
         // wallet.update({unMetaDialogVisible:false});
         wallet.update({metaDialogVisible: false});
         history.push('/wallet/detail');
@@ -187,7 +185,6 @@ export default {
         // }
         return _wallet;
       } else {
-        console.log('error network,', netId);
       }
       return null;
     },
@@ -198,7 +195,6 @@ export default {
         // message:'Failed to Set Signing Key: Account does not exist in the zkTube network'
         throw ('AccountNotExist');
       }
-      console.log('e========e', e);
       // if (e == "Error: Failed to Set Signing Key: Account does not exist in the zkTube network")
     },
 
@@ -208,7 +204,6 @@ export default {
         wallet.update({
           ethL1Balance: val,
         });
-        console.log('ethL1Balance', val, ethers.utils.formatEther(val));
       });
 
       const ethPrice = wallet.refreshTokenPrice('ETH');
@@ -216,7 +211,6 @@ export default {
         wallet.update({
           ethPrice: val,
         });
-        console.log('ethPrice', val, wallet.syncHTTPProvider);
       });
       return { ethL1Balance, ethPrice };
     },
@@ -231,7 +225,6 @@ export default {
     refreshL2Assets(_, thisModel) {
       const assets = thisModel.wallet.syncWallet.getAccountState();
       assets.then((val) => {
-        console.log('account assets:', val);
         wallet.update({
           committedBalances: val.committed.balances.ETH,
           verifiedBalances: val.verified.balances.ETH,
@@ -263,7 +256,6 @@ export default {
             });
             const receipt = changePubkey?.awaitReceipt();
             receipt.then((val) => {
-              console.log('receipt', val);
               wallet.update({changingPubKey:false});
             });
             return receipt;
@@ -318,7 +310,6 @@ export default {
       }
 
       const assets = await syncWallet.getAccountState();
-      console.log('account assets:', assets);
       wallet.update({
         committedBalances: assets.committed.balances.ETH,
         verifiedBalances: assets.verified.balances.ETH,
@@ -373,9 +364,6 @@ export default {
         syncHTTPProvider = _provider;
       }
 
-      console.log('deposit wallet', thisModel);
-      console.log(`目标地址：${syncWallet.address()}, amount`, amount);
-
       // const { tk } = 'ETH';
       const deposit = await syncWallet.depositToSyncFromEthereum({
         // param 1 address
@@ -413,7 +401,6 @@ export default {
       }
 
       const amount = zktube.utils.closestPackableTransactionAmount(ethers.utils.parseEther(data.amount));
-      console.log('amount', amount);
       const transfer = await syncWallet.syncTransfer({
         to: data.address,
         // eslint-disable-next-line @iceworks/best-practices/no-secret-info

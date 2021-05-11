@@ -77,14 +77,11 @@ function WalletDeposit() {
 
           let retry = 40;
           function retriveFun () {
-            // console.log("wallet1", wallet1);
-            // console.log("_deposit", _deposit);
-
+            
             if (wallet1?.web3 && _deposit?.ethTx?.hash) {
               // 0x237e87d6834186f9908f20c61337f1f72773b457e2c298ceeee73f8dcf9dae6e
               const receipt = wallet1.web3.eth.getTransactionReceipt(_deposit.ethTx.hash);
               receipt.then((contract) => {
-                // console.log('getTransactionReceipt', _deposit, contract);
                 if (contract?.status) {
                   const bgu = ethers.BigNumber.from(contract.gasUsed);
                   const fee = gasPrice.mul(bgu);
@@ -106,7 +103,6 @@ function WalletDeposit() {
                     fee: ethers.utils.formatEther(fee),
                     blockNumber: contract.blockNumber,
                   };
-                  // console.log('getTransactionReceipt', depositResult);
                   action.update({ depositContract: depositResult });
                   setLoadingDeposit(false);
                   history.push('/wallet/detail?t=2');
@@ -142,7 +138,6 @@ function WalletDeposit() {
           // // Completes when the tx reaches finality on Ethereum
           const verify = _deposit.awaitVerifyReceipt();
           verify.then((_verify) => {
-            console.log('deposit, verify', _verify);
           });
         }
 
@@ -156,20 +151,16 @@ function WalletDeposit() {
         // });
       });
     } catch (error) {
-      // console.log(error);
       const exceptionMsg = 'UserDeniedTransaction';
       wallet1.update({
         exceptionMsg,
       });
       // throw(exceptionMsg);
-      console.log('deposit exception', error);
     }
 
-    console.log('do deposit', data, 'ETH');
   }, [amount, wallet1, action]);
 
   const onSelect = useCallback((crypto: any) => {
-    console.log('onSelect', crypto);
     setVisible(false);
     setReadOnly(false);
     setSelected(crypto.currency);
@@ -188,7 +179,6 @@ function WalletDeposit() {
 
   const refreshEthBalance = useCallback((wallet) => {
     action.checkNetworkSupport().then((networkSupport) => {
-      console.log('networkSupport', wallet, wallet1);
       if (networkSupport) {
         const promRefresh = action.refreshEthBalance();
         // let eBalance = ethL1Balance;
@@ -200,13 +190,11 @@ function WalletDeposit() {
               setEthL1Balance(val);
               eBalance = val;
               UIrefreshEthBalance(eBalance, ePrice);
-              console.log('updateAssets, refreshWallet, ethL1Balance', val, wallet);
             });
             val.ethPrice.then((val) => {
               setEthPrice(val);
               ePrice = val;
               UIrefreshEthBalance(eBalance, ePrice);
-              console.log('updateAssets, refreshWallet, ethL1Balance', val);
             });
           }
         }, [eBalance, ePrice]);
@@ -223,7 +211,6 @@ function WalletDeposit() {
     if (eBalance != null) {
       const dataSource = [];
       const currency = 'ETH';
-      console.log('UIrefreshEthBalance', wallet1, eBalance, ePrice);
       const formatedBalance = formatBalance(currency, `${eBalance}`);
       dataSource.push({
         icon: 'icon-' + currency.toLowerCase(),
@@ -232,7 +219,6 @@ function WalletDeposit() {
         dollar: ePrice > 0 ? formatedBalance * ePrice : 0,
       });
       setAssets(dataSource);
-      console.log('dataSource', dataSource);
     }
   }, [wallet1, eBalance, ePrice]);
   // }
@@ -249,17 +235,14 @@ function WalletDeposit() {
           const provider = action.refreshWallet();
           provider.then((wallet2) => {
             if (wallet2) {
-              console.log('updateAssets, refreshWallet');
               refreshEthBalance(wallet1);
             } else {
               handleClose();
-              console.log('user canceled');
             }
           });
         }
       });
     } catch (e) {
-      console.log('action.updateAssets', e);
     }
 
   }, [wallet1]);
@@ -272,7 +255,6 @@ function WalletDeposit() {
   };
 
   const handleUnlock = useCallback(() => {
-    console.log('unlock');
   }, []);
 
   const setAmountByWei = useCallback((wei) => {
@@ -293,12 +275,10 @@ function WalletDeposit() {
         setAmount(_amount.toString());
       }
     } else {
-      console.log('error input', _amount);
     }
   }, [ethL1Balance]);
 
   const onException = useCallback((message) => {
-    console.log('onException', message);
   }, [wallet1]);
 
   return (

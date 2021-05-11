@@ -63,7 +63,6 @@ function WithdrawPage() {
   }, []);
 
   const onSelect = useCallback((crypto : any) => {
-    // console.log(crypto.amount)
     setVisible(false);
     setSelected(crypto.currency);
     setBalance(crypto.amount);
@@ -73,8 +72,6 @@ function WithdrawPage() {
 
 
   let withdrawMoney = useCallback(() => {
-    console.log("amot", amount)
-    console.log("selected", selected)
 
     // if (amount && selected?.currency) {
     //   let data = {amount, token: selected.currency, to: address};
@@ -85,13 +82,10 @@ function WithdrawPage() {
         const promWithdraw = action.withdraw(data);
       
         promWithdraw.then((ret) => {
-          console.log("ret", ret)
           if (ret?.receipt) {
             ret.receipt.then((_receipt) => {
-              console.log("_receipt", _receipt);
               const checkUrl = wallet1.l2BlockUrl + '/blocks/' + _receipt.block.blockNumber;
               setDetailUrl(checkUrl);
-              // console.log('receipt', _receipt)
 
               history.push('/wallet/detail?t=2');
             })
@@ -99,12 +93,10 @@ function WithdrawPage() {
 
           if (ret?.verifyReceipt) {
             ret.verifyReceipt.then((_verifyReceipt) => {
-              console.log('verifyReceipt', _verifyReceipt);
               const checkUrl = wallet1.l2BlockUrl + '/blocks/' + _verifyReceipt.block.blockNumber;
               setDetailUrl(checkUrl);
               if(_verifyReceipt == undefined){
                 // window.location.reload();
-                console.log(_verifyReceipt);
               }
               else if(_verifyReceipt.success == true){
                 resolveTransfer(true);
@@ -117,7 +109,6 @@ function WithdrawPage() {
         });
       }
       catch(e){
-        console.log("error from withdraw page", e);
       }
     }
    }, [wallet1, amount, address])
@@ -163,7 +154,6 @@ function WithdrawPage() {
       amount1 = '0.0';
 
       setAmount('0.0');
-      console.log('error input', _amount);
     }
   }, [wallet1, amount]);
 
@@ -177,13 +167,11 @@ function WithdrawPage() {
           setLoadingBalance(true);
           const provider = action.refreshWallet();
           provider.then((val) => {
-            console.log('updateAssets, refreshWallet', val);
             refreshAssets(wallet1);
           });
         }
       });
     } catch (e) {
-      console.log('action.updateAssets', e);
     }
 
   }, [wallet1]);
@@ -193,14 +181,11 @@ function WithdrawPage() {
         setAddress(_address);
         const promTransFee = wallet1.syncHTTPProvider.getTransactionFee('Withdraw', _address, 'ETH');
         promTransFee.then((val) => {
-          console.log("val",val)
           let totalFee =  ethers.utils.formatEther(val?.totalFee);
           setFee(totalFee);
 
           const feewei = ethers.utils.parseEther(`${totalFee}`);
-          console.log("feewei", feewei);
-          console.log("amtt", amount);
-
+         
         const amt = ethers.utils.parseEther(`${amount}`);
 
         const feeAmount = feewei.add(amt);
@@ -208,10 +193,8 @@ function WithdrawPage() {
         if(feeAmount.lte(wallet1?.assets?.verified?.balances?.ETH)){
           setCanWithdraw(true);
         }    
-          console.log('Withdraw fee', val);
         });
       // } catch (e) {
-      //   console.log(e);
       // }
     }
 
@@ -225,14 +208,12 @@ function WithdrawPage() {
     promRefresh.then((assets) => {
       if (assets) {
         UIrefreshEthBalance(assets, ePrice);
-        console.log('updateAssets, refreshWallet, ethL1Balance', assets, ePrice);
       }
     });
     promEthPrice.then((val) => {
       setEthPrice(val);
       ePrice = val;
       UIrefreshEthBalance(wallet1.assets, ePrice);
-      console.log('refreshAssets, refreshWallet, ethL1Balance', val);
     });
   }, [wallet1, ePrice, address]);
 
@@ -247,10 +228,8 @@ function WithdrawPage() {
 
   const UIrefreshEthBalance = useCallback((assets, ePrice) => {
     const dataSource = [];
-    console.log('UIrefreshEthBalance', wallet1, assets, ePrice);
     if (assets?.verified?.balances) {
       for (const [token, balance] of Object.entries(assets.verified.balances)) {
-        console.log('token, balance', token, balance);
 
         const formatedBalance = formatBalance(token, balance);
         dataSource.push({

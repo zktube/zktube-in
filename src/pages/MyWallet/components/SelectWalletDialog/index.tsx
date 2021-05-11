@@ -19,7 +19,6 @@ const SelectWalletDialog = () => {
     action.setState({ selectWalletDialogVisible: false });
     if (hasMask) {
       action.checkNetworkSupport().then((networkSupport) => {
-        console.log('networkSupport', wallet);
         if (networkSupport) {
           action.setState({ metaDialogVisible: true });
           const initResult = action.init();

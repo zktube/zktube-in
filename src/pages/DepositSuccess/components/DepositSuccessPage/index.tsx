@@ -21,14 +21,11 @@ let DepositSuccessPage = (props) => {
 
   const onQueryDeposit = useCallback(() => {
     if (wallet?.depositContract?.txHash) {
-      console.log('view deposit', wallet.depositContract.txHash);
     } else if (wallet?.depositContract?.ethTx?.hash) {
-      console.log('view deposit', wallet.depositContract.ethTx.hash);
     }
     // if (wallet?.web3) {
     //   const receipt = wallet.web3.eth.getTransactionReceipt(wallet.depositContract.ethTx.hash);
     //   receipt.then((contract) => {
-    //     console.log('getTransactionReceipt', contract);
     //   });
     // }
   }, [wallet]);

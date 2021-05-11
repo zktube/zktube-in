@@ -68,7 +68,6 @@ function TransactionItem(props) {
       // const dollar = ePrice > 0 ? formatedBalance * ePrice : 0,
       setMinerFee(formatedFee + 'ETH');
     } else {
-      // console.log('???', props.data);
     }
 
     switch (props?.data?.tx?.type) {
@@ -84,7 +83,6 @@ function TransactionItem(props) {
       case 'Transfer':
         setDirection('ETHL2 -> ETHL2');
         setIcon('icon-transfer');
-        // console.log('TransactionItem', props?.data);
         break;
       case 'ChangePubKey':
         setIcon('icon-unlock');
@@ -96,13 +94,11 @@ function TransactionItem(props) {
       default:
         break;
     }
-    // console.log('TransactionItem', props?.data);
 
     if (props?.data?.success) {
       setSuccess(true);
     } else {
       setSuccess(false);
-      console.log('stat failed', props.data, moment.locale());
     }
 
     if (props?.data?.tx?.priority_op?.to) {
@@ -131,14 +127,12 @@ function TransactionItem(props) {
   }, [wallet]);
 
   const viewDetail = useCallback(() => {
-    console.log('view detail');
   }, []);
 
   const toggle = useCallback(() => {
     // const promTx = wallet?.syncWallet?.getTransfer();
 
     // promTx.then((val) => {
-    //   console.log(val);
     // });
     setExpand((value) => !value);
   }, []);

@@ -26,7 +26,6 @@ const WalletDetail = (props) => {
   }
 
   useMount(() => {
-    console.log('props', props);
     if (props?.searchParams?.c == 1) {
       action.setState({ selectWalletDialogVisible: true });
     }
