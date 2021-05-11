@@ -92,6 +92,8 @@ function WithdrawPage() {
               const checkUrl = wallet1.l2BlockUrl + '/blocks/' + _receipt.block.blockNumber;
               setDetailUrl(checkUrl);
               // console.log('receipt', _receipt)
+
+              history.push('/wallet/detail?t=2');
             })
           }
 
@@ -290,7 +292,6 @@ function WithdrawPage() {
 
   return (
     <div className={styles.container} style={{marginTop:"20px"}}>
-      {loading}
       {loading ? <WithdrawSuccess add = {address} amt={amount} 
       load={effectState.withdraw.isLoading}
       resolve = {resolve}
