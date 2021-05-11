@@ -109,7 +109,7 @@ function WalletDeposit() {
                   // console.log('getTransactionReceipt', depositResult);
                   action.update({ depositContract: depositResult });
                   setLoadingDeposit(false);
-                  history.push('/wallet/deposit/success');
+                  history.push('/wallet/detail?t=2');
                   retry = 0;
                 }
               });
@@ -135,7 +135,7 @@ function WalletDeposit() {
           const receipt = _deposit.awaitReceipt();
           receipt.then((_receipt) => {
             // console.log('deposit, receipt', _receipt);
-            history.push('/wallet/deposit/success');
+            history.push('/wallet/detail?t=2');
           });
 
           // // Await verification

@@ -113,7 +113,8 @@ const TransferPage = () => {
             action.update({ transferContract: _transfer });
           const receipt = _transfer.awaitReceipt(); 
           receipt.then((_receipt) => {
-            resolveTransfer(true);
+            // resolveTransfer(true);
+            history.push('/wallet/detail?t=2');
           });
           const verify = _transfer.awaitVerifyReceipt();
           verify.then((_verify) => {
