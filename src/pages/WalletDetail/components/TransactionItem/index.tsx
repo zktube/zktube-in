@@ -145,7 +145,6 @@ function TransactionItem(props) {
 
   const getDetailUrl = useCallback(() => {
     if (props?.data?.hash) {
-      // const url = http://192.168.30.110:7000/transactions/0x09ccc365dc1b3b7cee44f819fa68ffcd93999d51964a92633a1e2b9f0ede9d16;
       let url = wallet.l2BlockUrl + '/transactions/' + props?.data?.hash;
       const bp = props.data.hash?.indexOf('sync-tx:');
       if (bp >= 0) {

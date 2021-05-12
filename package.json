@@ -33,7 +33,7 @@
     "stylelint": "^13.2.0"
   },
   "scripts": {
-    "start": "icejs start",
+    "start": "icejs start --mode local",
     "build": "icejs build",
     "lint": "npm run eslint && npm run stylelint",
     "eslint": "eslint --cache --ext .js,.jsx,.ts,.tsx ./",

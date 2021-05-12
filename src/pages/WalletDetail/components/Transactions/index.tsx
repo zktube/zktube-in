@@ -14,8 +14,6 @@ function Transactions() {
   });
 
   const getHistory = useCallback(() => {
-    // const queryUrl = 'http://t0tz.ceja.co:3001/api/v0.1/account/0x664d0dedef54c847038fef9716f0c1128bbff1c6/history/0/25';
-    // const queryUrl = 'http://t5tz:3001/api/v0.1/account/0x664d0dedef54c847038fef9716f0c1128bbff1c6/history/0/25';
     try {
       const promHistory = action.history();
 

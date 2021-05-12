@@ -1,38 +1,19 @@
 import React, { useState } from 'react';
-import { IStoreDispatch, history } from 'ice';
+import { IStoreDispatch, history, config } from 'ice';
 import { provider } from 'web3-core';
 import Web3 from 'web3';
 import { ethers, EWallet } from 'ethers';
 import * as zktube from 'zktube-soft-launch';
-import { updateLocale } from 'moment';
 
 declare const window: any;
 
 type Wallet = zktube.Wallet;
 
 // eslint-disable-next-line @iceworks/best-practices/no-http-url
-// const url = 'http://119.28.75.86:3030/jsrpc';
-
-const g_providerUrl = 'https://rinkeby-jsrpc.zktube.io';
+let g_providerUrl = 'https://rinkeby-jsrpc.zktube.io';
 // eslint-disable-next-line @iceworks/best-practices/no-http-url
-const g_l2BlockUrl = 'https://rinkeby-browser.zktube.io';
-const g_restApiUrl = 'https://rinkeby-api.zktube.io/api/v0.1';
-
-// const g_providerUrl = "http://124.156.151.46:3030/jsrpc";
-// const g_l2BlockUrl = 'http://124.156.151.46:7000';
-
-// const g_providerUrl = "http://101.32.219.21:3030/jsrpc";
-// const g_l2BlockUrl = 'http://101.32.219.21:7000';
-
-// const g_providerUrl = 'http://t5tz:3030/jsrpc';
-// const g_l2BlockUrl = 'http://t5tz:7000';
-// const g_restApiUrl = 'http://t5tz:3001/api/v0.1';
-
-// const g_providerUrl = 'http://t5tz.ceja.co:3030/jsrpc';
-// const g_l2BlockUrl = 'http://t5tz.ceja.co:7000';
-// const g_restApiUrl = 'http://t5tz.ceja.co:3001/api/v0.1';
-
-
+let g_l2BlockUrl = 'https://rinkeby-browser.zktube.io';
+let g_restApiUrl = 'https://rinkeby-api.zktube.io/api/v0.1';
 const g_l1TxUrl = 'https://rinkeby.etherscan.io/tx/';
 
 const g_networks = {'Mainnet': 1, 'rinkeby-jsrpc': 4};
@@ -97,19 +78,34 @@ async function getWeb3(): Promise<Web3> {
   });
 }
 
-// const signKey = async (_syncWallet: Wallet) => {
-//   if (!(await _syncWallet?.isSigningKeySet())) {
-//     // alert('_syncWallet?.isSigningKeySet()');
-//     const changePubkey = await _syncWallet?.setSigningKey({
-//       // eslint-disable-next-line @iceworks/best-practices/no-secret-info
-//       feeToken: 'ETH',
-//     });
-//     const receipt = await changePubkey?.awaitReceipt();
-//     console.log('receipt', receipt);
-//   }
-// };
+const initEnv = async () => {
+  // start project with command:
+  //    icejs start --mode local
+  // config file for development: src/config.ts
+  // export default {
+  //   default: {},
+  //   local: {
+  //     providerUrl: 'http://your.service.host:3030/jsrpc',
+  //     l2BlockUrl: 'http://your.service.host:7000',
+  //     restApiUrl: 'http://your.service.host:3001/api/v0.1'
+  //   }
+  // }
+
+  if (config?.providerUrl) {
+    g_providerUrl = config.providerUrl;
+  }
+  if (config?.l2BlockUrl) {
+    g_l2BlockUrl = config.l2BlockUrl;
+  }
+  if (config?.restApiUrl) {
+    g_restApiUrl = config.restApiUrl;
+  }
+
+}
 
 const zkTubeInitialize = async (_web3: any, callback?: (e: CustomError) => void) => {
+  await initEnv();
+
   await _web3.currentProvider?.enable();
   const ethersProvider = new ethers.providers.Web3Provider(_web3.currentProvider);
   const _syncHTTPProvider = await zktube.Provider.newHttpProvider(g_providerUrl);
@@ -130,7 +126,7 @@ const zkTubeInitialize = async (_web3: any, callback?: (e: CustomError) => void)
 export default {
   state: {
     l1TxUrl: g_l1TxUrl,
-    l2BlockUrl: g_l2BlockUrl,
+    l2BlockUrl: config?.l2BlockUrl ? config.l2BlockUrl : g_l2BlockUrl,
     metaDialogVisible: false,
     selectWalletDialogVisible: false,
     unMetaDialogVisible: false,
@@ -284,7 +280,6 @@ export default {
 
       let isDefined = false;
       Object.keys(g_networks).forEach(function(key) {
-        // const g_providerUrl = 'https://rinkeby-jsrpc.zktube.io';
         if (g_providerUrl.indexOf(key) > 0) {
           isDefined = true;
           const targetId = g_networks[key];
